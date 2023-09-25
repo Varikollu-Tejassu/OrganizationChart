@@ -5,12 +5,20 @@ import employees from "./data";
 import "../src/App.css";
 import employeeService from "./services/employeeDataService";
 import AddEmployee from "./components/addEmployee";
+import { Button, Modal, Form } from "react-bootstrap";
+import { Dropdown } from 'primereact/dropdown';
+
 
 const App = () => {
   const [edata, setEdata] = useState([]);
   const [isloading, setIsloading] = useState(true);
   const [searchvalue, setSearchvalue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
+
+  const toggleAddUserModal = () => {
+    setAddUserModalOpen((prevIsOpen) => !prevIsOpen);
+  };
 
   const getEmployees = async () => {
     await employeeService
@@ -33,19 +41,49 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [selectedCountry, setSelectedCountry] = useState(null)
+    const countries = [
+        { name: 'Australia', code: 'AU' },
+        { name: 'Brazil', code: 'BR' },
+        { name: 'China', code: 'CN' },
+        { name: 'Egypt', code: 'EG' },
+        { name: 'France', code: 'FR' },
+        { name: 'Germany', code: 'DE' },
+        { name: 'India', code: 'IN' },
+        { name: 'Japan', code: 'JP' },
+        { name: 'Spain', code: 'ES' },
+        { name: 'United States', code: 'US' }
+    ];
+
+    const selectedCountryTemplate = (option, props) => {
+        if (option) {
+            return (
+                <div className="flex align-items-center">
+                    <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
+                    <div>{option.name}</div>
+                </div>
+            );
+        }
+
+        return <span>{props.placeholder}</span>;
+    };
+
+    const countryOptionTemplate = (option) => {
+        return (
+            <div className="flex align-items-center">
+                <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
+                <div>{option.name}</div>
+            </div>
+        );
+    };
+
 
   const openModal = () => {
-
     setIsModalOpen(true);
-
   };
 
- 
-
   const closeModal = () => {
-
     setIsModalOpen(false);
-
   };
   if (!isloading) {
     return "Loading . . .";
@@ -60,18 +98,86 @@ const App = () => {
           placeholder="search by name"
           value={searchvalue}
         />
-        <button className="add-btn" onClick={openModal}>
+        <button className="add-btn" onClick={() => setAddUserModalOpen(true)}>
           Add Employee
         </button>
-        {isModalOpen && (
-          <AddEmployee
 
-            onCancel={closeModal}
-          />
-        )}
+        <div>
+          <Modal show={isAddUserModalOpen} onHide={toggleAddUserModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>New User</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="Name">
+                  <Form.Label>Name:</Form.Label>
+
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    // value={newUser.last_name}
+
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="email">
+                  <Form.Label>Email:</Form.Label>
+
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    // value={newUser.email}
+
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="contact">
+                  <Form.Label>Contact:</Form.Label>
+
+                  <Form.Control
+                    type="text"
+                    name="contact"
+                    // value={newUser.contact_no}
+
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="designation">
+                  <Form.Label>Designation:</Form.Label>
+
+                  <Form.Control
+                    type="text"
+                    name="designation"
+                    // value={newUser.designation}
+
+                    required
+                  />
+                </Form.Group>
+                
+              </Form>
+            </Modal.Body>
+            <Dropdown
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.value)}
+                  options={countries}
+                  optionLabel="name"
+                  placeholder="Select a Country"
+                  filter
+                  valueTemplate={selectedCountryTemplate}
+                  itemTemplate={countryOptionTemplate}
+                  className="w-full md:w-14rem"
+                />
+            <Modal.Footer>
+              <Button className="buttons">Submit</Button>
+            </Modal.Footer>
+          </Modal>
+          
+        </div>
       </div>
-
-      
 
       <OrganizationalChart data={edata} />
     </>
