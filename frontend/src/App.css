@@ -112,99 +112,7 @@
   display: flex;
 }
 
-/* card css */
-.card-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  color: #227c9d;
-  background-color: #fef9ef;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid #227c9d;
-  cursor: pointer;
-}
-.card {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  width: 25%;
-  height: 75%;
-  padding: 2rem;
-  margin: 2rem;
-  background-color: #fef9ef;
-  border-radius: 1rem;
-  border: 1px solid #d3d3d3;
-  overflow: scroll;
-}
-.card-header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.card-img {
-  width: 120px;
-  border-radius: 1rem;
-}
-.card-name {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-.card-role {
-  margin: 1rem 0;
-  font-size: 1.2rem;
-}
-.card-body {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-}
-.card-body-team-members {
-  margin-top: 1rem;
-  height: 26vh;
-  overflow: scroll;
-}
-.card-item {
-  width: 100%;
-  margin: 0.5rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-}
-.card-item-label {
-  margin: 0.5rem 0;
-  font-weight: bold;
-}
-.card-item-value {
-  text-align: justify;
-}
-.card-item-team {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-.card-item-img {
-  width: 50px;
-  height: 50px;
-  margin: 0.2rem;
-  border-radius: 50%;
-}
-.card-item-name {
-  margin-left: 0.5rem;
-  font-weight: bold;
-}
-.card-item-role {
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
+
 .search{
   height:40px;
   width:25%;
@@ -214,14 +122,42 @@
   padding-left: 10px;
 }
 
-.add-btn{
+.p-button-warning{
   height:40px;
   border-radius: 5px;
-  outline: none;
+  outline: none !important;
  float: right;
- margin-top: 1%;
+ margin-top: 1% !important;
  color: white;
- background-color:#227c9d ;
+ background-color:#227c9d !important ;
  cursor: pointer;
  
 }
+
+.input{
+ 
+  margin-top: 2% !important;
+  width: 75%;
+  margin-left: 12% !important;
+  align-items: center;
+}
+.w-full md:w-14rem{
+  height:20px !important;
+  margin-top: 2% !important;
+}
+#select{
+  width: 75% !important;
+  margin-left: 12% !important;
+}
+
+.Submit-btn{
+  margin-top: 5% !important;
+  height:40px;
+  width: 30% !important;
+  margin-bottom: 20px !important;
+  margin-left: 20% !important;
+  color: white;
+  background-color: #227c9d !important;
+  
+}
+

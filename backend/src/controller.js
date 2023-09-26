@@ -1,7 +1,7 @@
 const express = require("express");
 const creating = require('./sequelize/models/index');
 
-const table = creating.employeetable;
+const employeetable = creating.employeetable;
 const { Op } = require('sequelize')
 
 
@@ -9,7 +9,7 @@ const { Op } = require('sequelize')
 
 const getusers = async (req,res)=>{
     try{
-        const displaydata = await table.findAll()
+        const displaydata = await employeetable.findAll()
         res.send(displaydata);
     }
     catch(error){
@@ -17,5 +17,25 @@ const getusers = async (req,res)=>{
     }
 }
 
+const addusers = async (req,res)=>{
+    try{
+    var employee={
+  employeeName:req.body.employeename,
+  positionName:req.body.role,
+  department:req.body.department,
+  parentId:req.body.manager
+    }
+    created_user = await employeetable.create(employee);
+    res.status(201).json(created_user);
+    }catch (error) {
 
-module.exports ={getusers}
+        console.error('Error creating user:', error);
+      
+        res.status(500).json({ error: 'Internal server error' });
+      
+      }
+      
+      };
+
+
+module.exports ={getusers,addusers}

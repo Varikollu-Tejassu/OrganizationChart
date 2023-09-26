@@ -3,27 +3,30 @@ import { useEffect } from "react";
 import OrganizationalChart from "./components/orgChart";
 import "../src/App.css";
 import employeeService from "./services/employeeDataService";
-import AddEmployee from "./components/addEmployee";
-import { Button, Modal, Form } from "react-bootstrap";
-import { Dropdown } from 'primereact/dropdown';
 
+import { InputText } from 'primereact/inputtext';
+        
+import { Dropdown } from 'primereact/dropdown';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
 
 const App = () => {
   const [edata, setEdata] = useState([]);
   const [isloading, setIsloading] = useState(true);
-  const [searchvalue, setSearchvalue] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState('center');
+  const [manager, setManager] = useState(null)
+  const [employeename,setEmployeename] = useState("");
+  const [role,setRole]= useState("")
+  const [department,setDepartment] = useState("");
+  
 
-  const toggleAddUserModal = () => {
-    setAddUserModalOpen((prevIsOpen) => !prevIsOpen);
-  };
 
   const getEmployees = async () => {
     await employeeService
       .employeeData()
       .then((response) => {
-        console.log("insode");
+       
         setEdata(response.data);
         setIsloading(true);
         console.log(response.data);
@@ -40,26 +43,16 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [selectedCountry, setSelectedCountry] = useState(null)
-    const countries = [
-        { name: 'Australia', code: 'AU' },
-        { name: 'Brazil', code: 'BR' },
-        { name: 'China', code: 'CN' },
-        { name: 'Egypt', code: 'EG' },
-        { name: 'France', code: 'FR' },
-        { name: 'Germany', code: 'DE' },
-        { name: 'India', code: 'IN' },
-        { name: 'Japan', code: 'JP' },
-        { name: 'Spain', code: 'ES' },
-        { name: 'United States', code: 'US' }
-    ];
 
-    const selectedCountryTemplate = (option, props) => {
+
+
+
+    const selectedEmployeeTemplate = (option, props) => {
         if (option) {
             return (
                 <div className="flex align-items-center">
-                    <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
-                    <div>{option.name}</div>
+                   
+                    <div>{option.employeeName}</div>
                 </div>
             );
         }
@@ -67,23 +60,39 @@ const App = () => {
         return <span>{props.placeholder}</span>;
     };
 
-    const countryOptionTemplate = (option) => {
+    const employeeOptionTemplate = (option) => {
         return (
             <div className="flex align-items-center">
-                <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
-                <div>{option.name}</div>
+                <div>{option.employeeName}</div>
             </div>
         );
     };
-
-
-  const openModal = () => {
-    setIsModalOpen(true);
+    const show = (position) => {
+      setPosition(position);
+      setVisible(true);
   };
+ const submitform = ()=>{
+  employeeService.addEmployee(employeename,role,department,manager.id).then((res) =>{
+        
+    if (res.status === 201) {
+      
+      setVisible(false);
+      getEmployees();
+    }
+  
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+ }).catch((error) => {
+          
+  console.error("Fetch error:", error);
+})
+ }
+ 
+
+
+
+
+
+
   if (!isloading) {
     return "Loading . . .";
   }
@@ -91,89 +100,33 @@ const App = () => {
     <>
       <h1 className="title">Organization Chart</h1>
       <div className="add-search">
-        <input
+        {/* <input
           className="search"
           type="search"
           placeholder="search by name"
-          value={searchvalue}
-        />
-        <button className="add-btn" onClick={() => setAddUserModalOpen(true)}>
-          Add Employee
-        </button>
+          
+        /> */}
+        <Button label="Add Employee"  onClick={() => show('top-right')} className="p-button-warning" style={{ minWidth: '10rem' }} />
 
         <div>
-          <Modal show={isAddUserModalOpen} onHide={toggleAddUserModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>New User</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <Form>
-                <Form.Group controlId="Name">
-                  <Form.Label>Name:</Form.Label>
-
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    // value={newUser.last_name}
-
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="email">
-                  <Form.Label>Email:</Form.Label>
-
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    // value={newUser.email}
-
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="contact">
-                  <Form.Label>Contact:</Form.Label>
-
-                  <Form.Control
-                    type="text"
-                    name="contact"
-                    // value={newUser.contact_no}
-
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="designation">
-                  <Form.Label>Designation:</Form.Label>
-
-                  <Form.Control
-                    type="text"
-                    name="designation"
-                    // value={newUser.designation}
-
-                    required
-                  />
-                </Form.Group>
-                
-              </Form>
-            </Modal.Body>
-            <Dropdown
-                  value={selectedCountry}
-                  onChange={(e) => setSelectedCountry(e.value)}
-                  options={countries}
-                  optionLabel="name"
-                  placeholder="Select a Country"
-                  filter
-                  valueTemplate={selectedCountryTemplate}
-                  itemTemplate={countryOptionTemplate}
-                  className="w-full md:w-14rem"
-                />
-            <Modal.Footer>
-              <Button className="buttons">Submit</Button>
-            </Modal.Footer>
-          </Modal>
+        <Dialog header="AddEmployee" visible={visible} position={position} style={{ width: '30vw' }} onHide={() => setVisible(false)}  draggable={false} resizable={false}>
+         
+         
+          <div className="card flex justify-content-center">
+         
+          <InputText className="input" placeholder="Employee Name" value={employeename} onChange={(e) => setEmployeename(e.target.value)} />
+          
+          <InputText className="input" placeholder="Position" value={role} onChange={(e) => setRole(e.target.value)} />
+          <InputText className="input" placeholder="Department" value={department} onChange={(e) => setDepartment(e.target.value)} />
+          <div style={{marginTop:"8px"}}>
+            <Dropdown id="select" value={manager} onChange={(e) => setManager(e.value)} options={edata} optionLabel="name" placeholder="Reporting Manager" 
+                valueTemplate={selectedEmployeeTemplate} itemTemplate={employeeOptionTemplate} className="w-full md:w-14rem" />
+        <Button label="Submit"  onClick={submitform} className="Submit-btn" style={{ minWidth: '10rem' }} />
+        </div> 
+        </div> 
+          
+        
+            </Dialog>
           
         </div>
       </div>
