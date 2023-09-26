@@ -15,15 +15,6 @@ module.exports = {
       positionName: {
         type: Sequelize.STRING
       },
-      phone: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      location: {
-        type: Sequelize.STRING
-      },
       department: {
         type: Sequelize.STRING
       },

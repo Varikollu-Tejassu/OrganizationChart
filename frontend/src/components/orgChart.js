@@ -3,21 +3,13 @@ import ReactDOMServer from "react-dom/server";
 import { OrgChart } from "d3-org-chart";
 import CustomNodeContent from "./customNodeContent";
 import CustomExpandButton from "./customExpandButton";
-// import EmployeeDetailsCard from "./employeeDetailsCard";
+
 
 const OrganizationalChart = (props) => {
   const d3Container = useRef(null);
-  // const [cardShow, setCardShow] = useState(false);
-  // const [employeeId, setEmployeeId] = useState("");
-
-  // const handleShow = () => setCardShow(true);
-  // const handleClose = () => setCardShow(false);
 
   useLayoutEffect(() => {
-    // const toggleDetailsCard = (nodeId) => {
-    //   handleShow();
-    //   setEmployeeId(nodeId);
-    // };
+  
     const chart = new OrgChart();
     if (props.data && d3Container.current) {
       chart
@@ -27,7 +19,6 @@ const OrganizationalChart = (props) => {
         .nodeHeight((d) => 140)
         .compactMarginBetween((d) => 80)
         .onNodeClick((d) => {
-          // toggleDetailsCard(d);
         })
         .buttonContent((node, state) => {
           return ReactDOMServer.renderToStaticMarkup(
@@ -45,13 +36,6 @@ const OrganizationalChart = (props) => {
 
   return (
     <div className="org-chart" ref={d3Container}>
-      {/* {cardShow && (
-        <EmployeeDetailsCard
-          employees={props.data}
-          employee={props.data.find((employee) => employee.id === employeeId)}
-          handleClose={handleClose}
-        />
-      )} */}
     </div>
   );
 };

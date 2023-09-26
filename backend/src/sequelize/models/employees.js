@@ -26,15 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     positionName: {
       type: DataTypes.STRING
     },
-    phone: {
-      type: DataTypes.STRING
-    },
-    email: {
-      type: DataTypes.STRING
-    },
-    location: {
-      type: DataTypes.STRING
-    },
     department: {
       type: DataTypes.STRING
     },
