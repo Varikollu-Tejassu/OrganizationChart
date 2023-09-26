@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import OrganizationalChart from "./components/orgChart";
-import employees from "./data";
 import "../src/App.css";
 import employeeService from "./services/employeeDataService";
 import AddEmployee from "./components/addEmployee";
